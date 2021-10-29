@@ -19,11 +19,9 @@ namespace TestSystem
         public string NoAimOffsetTag = "NoAimOffset";
         public string LevelTag = "Level";
         public string EnemyTag = "Enemy";
-        public Inventory inventory;
-        private ItemWorld itemWorld;        
-        private bool isStay = false;
-        private bool isDishSlotFull = false;
-        [SerializeField] private UI_Inventory uiInventory;
+            
+       
+        
 
         Rigidbody playerBody;
         Transform playerTransform;
@@ -32,12 +30,11 @@ namespace TestSystem
         {
             init();
             
-            //inventory.AddItem(new Item { itemType = Item.ItemType.material, amount = 5 });
+           
         }
         public void Awake()
         {
-            //inventory = new Inventory();
-            //uiInventory.SetInventory(inventory);
+          
             
 
 

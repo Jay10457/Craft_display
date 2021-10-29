@@ -11,24 +11,20 @@ namespace Inventory
     {
         Item _item;
         int itemAmount;
-        static Transform camTransform;
+      
 
-        private void Start()
-        {
-            if (!camTransform)
-                camTransform = Camera.main.transform;
-        }
+       
 
-        private void Update()
-        {
-            transform.forward = -camTransform.forward;
-        }
+      
+        
 
         public void SetUpPickupable(Item item, int amount)
         {
             _item = item;
             itemAmount = amount;
-            GetComponent<SpriteRenderer>().sprite = item.itemSprite;
+            //GetComponent<SpriteRenderer>().sprite = item.itemSprite;
+            GetComponentInChildren<SpriteRenderer>().sprite = item.itemSprite;
+            item.itemPrefab = GetComponent<GameObject>().gameObject;
         }
 
         private void OnTriggerEnter(Collider other)

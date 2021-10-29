@@ -13,6 +13,8 @@ namespace Inventory
         [Tooltip("stack Limit")]
         public int stackLimit = 5;
         public Sprite itemSprite;
+        [Tooltip("Game model of Item")]
+        public GameObject itemPrefab;
         public Type type;
         [Tooltip("Color of the item slot border.")]
         public Color itemBorderColor = new Color(1, 1, 1, 1);
@@ -22,7 +24,6 @@ namespace Inventory
 
         public enum Type
         {
-            All,
             material,
             dish,
             Weapons

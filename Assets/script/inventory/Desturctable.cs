@@ -10,9 +10,8 @@ namespace Inventory
         public Item itemDrop;
         public GameObject itemPrefab;
         public int dropAmount;
-        public float maxHealth = 1;
-        public float health = 1;
-        public float minDamage;
+        public int dropPerItem;
+       
 
         static GameObject player;
 
@@ -20,22 +19,11 @@ namespace Inventory
         void Start()
         {
             DropItems();
-            if (player == null)
-            {
-                player = GameObject.FindGameObjectWithTag("Player");
-            }
-            health = maxHealth;
+           
         }
 
         // Update is called once per frame
-        void Update()
-        {
-            if (health < 0)
-            {
-                DropItems();
-                Destroy(gameObject);
-            }
-        }
+       
 
         void DropItems()
         {
@@ -44,14 +32,11 @@ namespace Inventory
                 //Spawn force and position. Random so they all pop out in different directions
                 Vector3 force = new Vector3(Random.Range(-2f, 2f), 2, Random.Range(-2f, 2f));
                 ItemPickUp drop = (Instantiate(itemPrefab, transform.position + (force / 4f), Quaternion.identity) as GameObject).GetComponent<ItemPickUp>();
-                drop.SetUpPickupable(itemDrop, 5);
+                drop.SetUpPickupable(itemDrop, dropPerItem);
                 drop.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
             }
         }
 
-        public void Damage(float damage)
-        {
-            health -= damage;
-        }
+     
     }
 }

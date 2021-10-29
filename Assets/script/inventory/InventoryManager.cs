@@ -11,6 +11,7 @@ namespace Inventory
     {
         [Tooltip("Item UI follows cursor ")]
         [SerializeField] private Image currentItemImage;
+        [SerializeField] private GameObject itemPrefab;
         [Tooltip("Item stack text UI that follows cursor")]
         public Text currentItemStackDisplay;
 
@@ -41,6 +42,7 @@ namespace Inventory
             Debug.LogError(slots.Count);
             
         }
+        
 
         private void Update()
         {
@@ -51,16 +53,13 @@ namespace Inventory
             if (currentItem)
             {
                 //Set current held Item UI
-                currentItemImage.enabled = true;
+                currentItemImage.enabled = true;               
                 currentItemImage.sprite = currentItem.itemSprite;
                 currentItemStackDisplay.text = currentItemAmount.ToString();
                 currentItemStackDisplay.gameObject.SetActive(true);
 
                 //If clicking off of inventory UI, drop item
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    DropItem(currentItem, currentItemAmount);
-                }
+               
             }
             else
             {
@@ -68,6 +67,8 @@ namespace Inventory
                 currentItemImage.enabled = false;
                 currentItemStackDisplay.gameObject.SetActive(false);
             }
+            //Make UI follow cursor
+            //currentItemImage.transform.position = Input.mousePosition;
         }
         /// <summary>
         /// Add [amount] of [item] to inventory. Automatically checks slots of matching items and stack limits.
@@ -76,13 +77,16 @@ namespace Inventory
         /// <param name="item">What item to add</param>
         /// <param name="amount">How many of the item to add</param>
         /// <returns></returns>
-        
+
         public static int AddItemToInventory(Item item, int amount)
         {
             int remaining = amount;
 
-            items.Add(item);
 
+            if (true)
+            {
+
+            }
             Debug.LogError(items.Count);
 
             //check slots that contain same item
@@ -110,6 +114,8 @@ namespace Inventory
                 if (slot.currentItem == null)
                 {
                     remaining = slot.AddItemToSlot(item, remaining);
+
+
                 }
                 if (remaining <= 0)
                 {
@@ -129,10 +135,26 @@ namespace Inventory
 
         public static void DropItem(Item item, int amount, bool removeCurrentItem = true)
         {
-            items.Remove(item);
+            
             if (item == null)
                 return;
+            Transform player = GameObject.FindGameObjectWithTag("Player").transform;
 
+            //Grab forward direction with slight randomness
+            Vector3 random = new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f));
+            Vector3 direction = player.forward + random;
+
+            //"Throw" item forwards
+
+            //ItemPickUp drop = (Instantiate(currentItem.itemPrefab;//FIX
+
+
+            //Remove current item
+            if (removeCurrentItem)
+            {
+                currentItem = null;
+                currentItemAmount = 0;
+            }
         }
         /// <summary>
         /// Swaps the currently held item stack with the item stack in [slot]. Will add to slot stack if items match.
@@ -142,11 +164,101 @@ namespace Inventory
         /// 
         public static void SwapItemWithSlot(InventorySlot slot)
         {
+            
+            //If items are different, do a complete swap
+            if (slot.currentItem != currentItem)
+            {
+                Debug.LogError("swap");
+                Item tempItem = slot.currentItem;
+                int tempItemAmount = slot.currentItemAmount;
 
+                //Check slot/item type. eg. don't put head items in torso slot.
+                if (slot.CheckItemCompatible(currentItem))
+                {
+                    slot.SetItemInSlot(currentItem, currentItemAmount);
+                    currentItem = tempItem;
+                    currentItemAmount = tempItemAmount;
+                }
+            }
+            //If items do match and they aren't both null, add current stack onto slot stack.
+            else if (currentItem != null)
+            {
+                
+                int overflow = slot.AddItemToSlot(currentItem, currentItemAmount);
+
+                currentItemAmount = 0;
+                if (overflow > 0)
+                    currentItemAmount = overflow;
+
+            }
+        }
+        public static bool CheckItem(Item item, int amount)
+        {
+
+            int remaining = amount;
+
+            foreach (InventorySlot slot in slots)
+            {
+                if (slot.currentItem == item)
+                {
+                    remaining -= slot.currentItemAmount;
+                }
+
+                if (remaining <= 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Removes [amount] of [item] from inventory. 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="amount"></param>
+        public static void RemoveItemFromInventory(Item item, int amount)
+        {
+            int remaining = amount;
+
+            foreach (InventorySlot slot in slots)
+            {
+                if (slot.currentItem == item)
+                {
+                    if (remaining >= slot.currentItemAmount)
+                    {
+                        remaining -= slot.currentItemAmount;
+                        slot.SetItemInSlot(null, 0);
+                    }
+                    else
+                    {
+                        slot.SetItemInSlot(item, slot.currentItemAmount - remaining);
+                        remaining = 0;
+                    }
+
+                    if (remaining <= 0)
+                        return;
+                }
+
+            }
         }
 
 
+        // <summary>
+        /// Removes currently held item completely
+        /// </summary>
+        public static void RemoveItem()
+        {
+            currentItem = null;
+            currentItemAmount = 0;
+        }
 
-
+        public void BinItem()
+        {
+            RemoveItem();
+        }
     }
+
 }
+

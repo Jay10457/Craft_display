@@ -17,23 +17,17 @@ namespace Inventory
         [Tooltip("What type of items this slot can hold")]
         public Item.Type type;
         public bool interactable = true;
-
+        
         [SerializeField] protected Image itemImage;
         [SerializeField] protected Image borderImage;
         [SerializeField] protected Image stackImage;
         [SerializeField] protected Text stackText;
-
+        [SerializeField] protected GameObject tooltipPrefab;
         protected bool mouseOver;
-        protected static GameObject tooltipPrefab;
+        
         protected GameObject tooltipInstance;
 
-        private void Awake()
-        {
-            if (!tooltipPrefab)
-            {
-                tooltipPrefab = Resources.Load("Tooltip") as GameObject;
-            }
-        }
+       
         private void Update()
         {
             if (currentItemAmount <= 0)
@@ -57,11 +51,12 @@ namespace Inventory
         /// </summary>    
         protected virtual void MouseOverChecks()
         {
+            Debug.LogError("mouse over check");
             if (!interactable) return;
 
             if (Input.GetMouseButtonDown(0))
             {
-                InventoryManager.SwapItemWithSlot(this);//TODO:
+                //InventoryManager.SwapItemWithSlot(this);//TODO:
             }
             if (Input.GetMouseButtonDown(1))
             {
@@ -91,8 +86,12 @@ namespace Inventory
                 //Create/ Destroy Tooltip
                 if (mouseOver && !tooltipInstance)
                 {
+                    //Debug.LogError(currentItem.tooltips);
                     tooltipInstance = Instantiate(tooltipPrefab);
-                    tooltipInstance.GetComponent<Tooltip>().SetTooltip(currentItem.tooltips, transform.position + Vector3.up * 20);
+                    //Debug.LogError(tooltipPrefab);
+                    
+                    tooltipInstance.GetComponent<Tooltip>().SetTooltip(currentItem.tooltips, transform.position + Vector3.up * 30);
+                    
                 }
                 else if (!mouseOver && tooltipInstance != null)
                 {
@@ -128,7 +127,7 @@ namespace Inventory
                 return 0;
             
             //Check item type for equipment slots
-            if (type != Item.Type.All && type != item.type) return amoumt;
+            if (type != item.type) return amoumt;
             //Add to stack if items are the same : TODO:can't pickup
             if (currentItem == item)
             {
@@ -159,7 +158,7 @@ namespace Inventory
         }
         public bool CheckItemCompatible(Item item)
         {
-            return (item == null ||type == Item.Type.All || type == item.type);
+            return (item == null|| type == item.type);
         }
         private void OnDisable()
         {

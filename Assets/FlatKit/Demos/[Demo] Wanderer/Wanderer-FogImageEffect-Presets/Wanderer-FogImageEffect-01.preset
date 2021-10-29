@@ -481,3 +481,4 @@ Preset:
     propertyPath: material
     value: 
     objectReference: {fileID: 0}
+  m_ExcludedProperties: []
