@@ -34,6 +34,8 @@ namespace Inventory
         {
             materialAmountText.text = string.Format("{0}/5", materialAmount);
         }
+        
+        
 
     }
 }

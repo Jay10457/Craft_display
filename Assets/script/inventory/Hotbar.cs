@@ -33,7 +33,7 @@ namespace Inventory
             {
                 if (i == currentSlotIndex)
                 {
-                    slots[i].transform.localScale = Vector3.one * 1.2f;
+                    slots[i].transform.localScale = Vector3.one * 1.1f;
                     //Debug.LogError(i);//test slot index
                 }
                     

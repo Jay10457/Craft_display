@@ -86,7 +86,7 @@ Material:
     - _GradientCenterY: 0
     - _GradientEnabled: 0
     - _GradientSize: 10
-    - _LightContribution: 1
+    - _LightContribution: 0.5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -109,11 +109,11 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.8113208, g: 0.71564615, b: 0.71564615, a: 1}
     - _ColorDim: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
-    - _ColorDimSteps: {r: 0.6226415, g: 0.44348523, b: 0.5464809, a: 1}
+    - _ColorDimSteps: {r: 0.4339623, g: 0.34594163, b: 0.36883676, a: 1}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FlatRimColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}

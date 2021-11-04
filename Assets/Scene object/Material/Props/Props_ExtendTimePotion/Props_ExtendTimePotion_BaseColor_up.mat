@@ -9,7 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Props_ExtendTimePotion_BaseColor_up
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
-  m_ShaderKeywords: _CELPRIMARYMODE_STEPS _TEXTUREBLENDINGMODE_MULTIPLY _UNITYSHADOWMODE_NONE
+  m_ShaderKeywords: DR_RIM_ON _CELPRIMARYMODE_STEPS _TEXTUREBLENDINGMODE_MULTIPLY
+    _UNITYSHADOWMODE_NONE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -86,12 +87,12 @@ Material:
     - _GradientCenterY: 0
     - _GradientEnabled: 0
     - _GradientSize: 10
-    - _LightContribution: 1
+    - _LightContribution: 0.5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RimEnabled: 0
+    - _RimEnabled: 1
     - _SelfShadingSize: 0.5
     - _SelfShadingSizeExtra: 0.6
     - _ShadowEdgeSize: 0.05
@@ -116,6 +117,7 @@ Material:
     - _ColorDimSteps: {r: 0.16981131, g: 0.099946596, b: 0.044054825, a: 1}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FlatRimColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
+    - _FlatRimColor: {r: 0.6132076, g: 0.3970781, b: 0.26900142, a: 1}
     - _FlatSpecularColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
+  m_BuildTextureStacks: []
