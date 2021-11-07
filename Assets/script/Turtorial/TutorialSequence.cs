@@ -20,7 +20,7 @@ namespace Tutorial
 
         private event Action OnNextButtomClick;
         private GameObject currentChapter;
-        private Image BG;
+        private Image bg;
         private string playerName;
         private int i = 0;
 
@@ -46,6 +46,7 @@ namespace Tutorial
         {
             CheckName();
             UnLock();
+            IsPlayerNextPot();
             
         }
         private void CheckName()
@@ -93,6 +94,7 @@ namespace Tutorial
             if (i == 3)
             {
                 Time.timeScale = 1;
+                tutorialUI.GetComponent<Image>().color = new Color(0, 0, 0, 0);
                 
             }
             i += 1;
@@ -100,6 +102,15 @@ namespace Tutorial
             sequence[i - 1].SetActive(false);
             
             
+        }
+
+        private void IsPlayerNextPot()
+        {
+            if (Cooker.isPlayerIn && i == 4)
+            {
+                NextButtomClick();
+                nextButtom.gameObject.SetActive(true);
+            }
         }
 
         private void Init()

@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - H_pot
+  - J_pot
   layers:
   - Default
   - TransparentFX

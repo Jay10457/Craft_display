@@ -3,33 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Cooker : MonoBehaviour
+namespace Tutorial
 {
-    [SerializeField] private Canvas cookUI;
-    private List<Collider> playerColliders = new List<Collider>();
 
 
-    private void OnTriggerEnter(Collider col)
+    public class Cooker : MonoBehaviour
     {
-        
-        
-        if (!playerColliders.Contains(col) && col.gameObject.tag == "Player")
-        {
-            cookUI.gameObject.SetActive(true);
-            playerColliders.Add(col);
-            //Debug.LogError(playerColliders.Count);
-            
-        }
-    }
+        [SerializeField] private GameObject cookUI;
+        public static bool isPlayerIn;
+        private List<Collider> playerColliders = new List<Collider>();
 
-    private void OnTriggerExit(Collider col)
-    {
-        if (col.gameObject.tag == "Player")
+
+        private void OnTriggerEnter(Collider col)
         {
-            playerColliders.Remove(col);
-            cookUI.gameObject.SetActive(false);
-            //Debug.LogError(playerColliders.Count);
+
+
+            if (!playerColliders.Contains(col) && col.gameObject.tag == "Player")
+            {
+                cookUI.gameObject.SetActive(true);
+                playerColliders.Add(col);
+                isPlayerIn = true;
+                //Debug.LogError(playerColliders.Count);
+
+            }
         }
-       
+
+        private void OnTriggerExit(Collider col)
+        {
+            if (col.gameObject.tag == "Player")
+            {
+                playerColliders.Remove(col);
+                cookUI.gameObject.SetActive(false);
+                isPlayerIn = false;
+                //Debug.LogError(playerColliders.Count);
+            }
+
+        }
     }
 }
+
