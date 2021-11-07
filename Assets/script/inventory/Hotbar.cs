@@ -31,7 +31,7 @@ namespace Inventory
             //Scale up currently selected slot
             for (int i = 0; i < slots.Length; i++)
             {
-                if (i == currentSlotIndex)
+                if (i == currentSlotIndex && slots[i].currentItem != null)
                 {
                     slots[i].transform.localScale = Vector3.one * 1.1f;
                     //Debug.LogError(i);//test slot index
@@ -43,23 +43,24 @@ namespace Inventory
 
                 
             }
-
-            //Scroll to swap slots
-            if (Input.mouseScrollDelta.y < 0)
+            string input = Input.inputString;
+            switch (input)
             {
-                if (currentSlotIndex >= slots.Length - 1)
+                case "1":
                     currentSlotIndex = 0;
-                else
-                    currentSlotIndex++;
+                    break;
+                case "2":
+                    currentSlotIndex = 1;
+                    break;
+                case "3":
+                    currentSlotIndex = 2;
+                    break;
+                default:
+                    break;
             }
-            else if (Input.mouseScrollDelta.y > 0)
-            {
-                if (currentSlotIndex <= 0)
-                    currentSlotIndex = slots.Length - 1;
-                else
-                    currentSlotIndex--;
 
-            }
+
+
             //On item change (not called when swapping between slots containing same item)
             if (lastItem != slots[currentSlotIndex].currentItem)
             {
@@ -73,8 +74,8 @@ namespace Inventory
                 //Instantiate equip item if currentItem type = Hand
                 if (slots[currentSlotIndex].currentItem && slots[currentSlotIndex].currentItem.type == Item.Type.Weapons)
                 {
-                    currentEquip = Instantiate(slots[currentSlotIndex].currentItem.equipPrefab, equipParent).transform;
-                    currentEquip.localPosition = Vector3.zero;
+                    //currentEquip = Instantiate(slots[currentSlotIndex].currentItem.equipPrefab, equipParent).transform;
+                    //currentEquip.localPosition = Vector3.zero;
                 }
             }
         }

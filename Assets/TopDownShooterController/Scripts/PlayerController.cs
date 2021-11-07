@@ -13,8 +13,7 @@ namespace TestSystem
         public bool RotationSmooth = true;
         public Transform WeaponPivot;
         public Transform PlayerModel;
-        //public Transform dishSlot;
-        //public Transform[] weaponSlots;
+        
 
         public string NoAimOffsetTag = "NoAimOffset";
         public string LevelTag = "Level";
@@ -80,7 +79,7 @@ namespace TestSystem
 
             speedMultiplier = (1f - angle / 360f);
 
-            playerBody.MovePosition(playerBody.position + movementAmount * MovementSpeed * speedMultiplier * Time.fixedDeltaTime);
+            playerBody.MovePosition(playerBody.transform.position + movementAmount * MovementSpeed * speedMultiplier * Time.fixedDeltaTime);
         }
 
         void rotatePlayer()

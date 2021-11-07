@@ -9,11 +9,6 @@ namespace Inventory
 
     public class InventoryManager : MonoBehaviour
     {
-        [Tooltip("Item UI follows cursor ")]
-        [SerializeField] private Image currentItemImage;
-        [SerializeField] private GameObject itemPrefab;
-        [Tooltip("Item stack text UI that follows cursor")]
-        public Text currentItemStackDisplay;
 
         static InventoryManager instance;
 
@@ -46,29 +41,7 @@ namespace Inventory
 
         private void Update()
         {
-            //Set current item to null if stack is 0
-            if (currentItemAmount <= 0)
-                currentItem = null;
-
-            if (currentItem)
-            {
-                //Set current held Item UI
-                currentItemImage.enabled = true;               
-                currentItemImage.sprite = currentItem.itemSprite;
-                currentItemStackDisplay.text = currentItemAmount.ToString();
-                currentItemStackDisplay.gameObject.SetActive(true);
-
-                //If clicking off of inventory UI, drop item
-               
-            }
-            else
-            {
-                //Clear current held UI
-                currentItemImage.enabled = false;
-                currentItemStackDisplay.gameObject.SetActive(false);
-            }
-            //Make UI follow cursor
-            //currentItemImage.transform.position = Input.mousePosition;
+           
         }
         /// <summary>
         /// Add [amount] of [item] to inventory. Automatically checks slots of matching items and stack limits.
