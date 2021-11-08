@@ -44,7 +44,11 @@ namespace Tutorial
         }
         private void Update()
         {
-            InputNagnitude();
+            if (isEnableInput)
+            {
+                InputNagnitude();
+            }
+            
         }
         private void FixedUpdate()
         {

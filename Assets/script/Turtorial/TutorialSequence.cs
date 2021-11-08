@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using TMPro;
+using Inventory;
 namespace Tutorial
 {
 
@@ -16,19 +16,35 @@ namespace Tutorial
         [SerializeField] private Button nextButtom;
         [SerializeField] private Texture2D cursor;
         [SerializeField] private InputField nameInput;
-        [SerializeField] private TMP_Text playerText;
+        [SerializeField] private Text playerText;
         [SerializeField] private GameObject cookerUI;
         [SerializeField] private Sprite flourIcon;
         [SerializeField] private Sprite cheeseIcon;
+        [SerializeField] private Image cheeseAmountIcon;
         [SerializeField] private Button[] materialSlots;
+        [SerializeField] private Button cookStartButtom;
+        [SerializeField] private Text materialAmoutText;
+        [SerializeField] private Image progressBar;
+        [SerializeField] private Button cookDone;
+        [SerializeField] private Item jchDish;
+        [SerializeField] private Camera cam;
+        
         
 
         private event Action OnNextButtomClick;
+        private event Action OnCookStartButtomClick;
+        private event Action OnCookDoneButtomClick;
         private GameObject currentChapter;
         
         private Image bg;
         private string playerName;
+        private int materialAmount = 5;       
         private int i = 0;
+        private float time = 0;
+        private bool canCook = false;
+        public static bool lookAtTarget = false;
+        
+        
 
         private void OnEnable()
         {
@@ -37,8 +53,17 @@ namespace Tutorial
             {
                 if (OnNextButtomClick != null) OnNextButtomClick();
             });
+            cookStartButtom.onClick.RemoveAllListeners();
+            cookStartButtom.onClick.AddListener(() =>
+            {
+                if (OnCookStartButtomClick != null) OnCookStartButtomClick();
+            });
+            cookDone.onClick.RemoveAllListeners();
+            cookDone.onClick.AddListener(() =>
+            {
+                if (OnCookDoneButtomClick != null) OnCookDoneButtomClick();
+            });
 
-           
         }
         private void Awake()
         {
@@ -56,7 +81,17 @@ namespace Tutorial
             CheckName();
             UnLock();
             IsPlayerNextPot();
+            CookButtonController();
+            MaterialAmount();
+            if (canCook)
+            {
+                CookerTimer(3f);
+            }
             
+
+           
+
+
         }
         private void CheckName()
         {
@@ -82,7 +117,7 @@ namespace Tutorial
         private void SaveName()
         {
             //Debug.LogError(playerName);
-            playerText.SetText(playerName);
+            playerText.text = playerName;
             //TODO: Save
         }
         private void NextButtomClick()
@@ -110,8 +145,16 @@ namespace Tutorial
                     break;
                 case 7:
                     nextButtom.gameObject.SetActive(false);
-                    tutorialUI.GetComponent<Image>().raycastTarget = false;
+                    
                     TutorialCooker();
+                    StartCoroutine(Timer(1f));// into pot tutorial
+                    break;
+                case 8:
+                    tutorialUI.GetComponent<Image>().raycastTarget = false;
+                    break;
+                case 9:
+                    StartCoroutine(Timer(1f));
+                    
                     break;
                 default:
                     break;
@@ -122,6 +165,7 @@ namespace Tutorial
             
             
         }
+        #region cooker
         private void TutorialCooker()
         {
             cookerUI.transform.GetChild(0).GetComponent<Image>().sprite = flourIcon;
@@ -142,26 +186,87 @@ namespace Tutorial
                 }
 
             }
+            OnCookStartButtomClick += CookStart;
+            OnCookDoneButtomClick += AddFoodToSlot;
            
 
 
         }
+        private void MaterialAmount()
+        {
+            materialAmoutText.text = string.Format("{0}/5", materialAmount);
+        }
         private void AddMaterial(int index)
         {
             materialSlots[index].gameObject.GetComponent<Image>().sprite = cheeseIcon;
+            materialAmount -= 1;
+            StartCoroutine(FrashIcon(2f));
+            StartCoroutine(Timer(0f));
             switch (index)
             {
                 case 0:
                     materialSlots[1].gameObject.GetComponent<Button>().enabled = false;
+                    materialSlots[0].gameObject.GetComponent<Button>().enabled = false;
                     break;
                 case 1:
                     materialSlots[0].gameObject.GetComponent<Button>().enabled = false;
+                    materialSlots[1].gameObject.GetComponent<Button>().enabled = false;
                     break;
                 default:
                     break;
             }
         }
-        
+        private void CookButtonController()
+        {
+            
+            if (materialSlots[0].GetComponent<Image>().sprite.name == "Game_Cooking_cheese" 
+                || materialSlots[1].GetComponent<Image>().sprite.name == "Game_Cooking_cheese" )
+            {
+                if (sequence[11].activeInHierarchy)
+                {
+                    cookStartButtom.interactable = true;
+                }
+               
+            }
+            else
+            {
+                cookStartButtom.interactable = false;
+            }
+            
+        }
+        private void CookStart()
+        {
+            cookerUI.gameObject.SetActive(false);
+            progressBar.gameObject.SetActive(true);
+            canCook = true;
+            NextButtomClick();
+            
+            
+        }
+        private void CookerTimer(float wantTime)
+        {
+            
+            if (time < wantTime)
+            {
+                time += Time.deltaTime;
+                progressBar.transform.GetChild(0).GetComponent<Image>().fillAmount = time / wantTime;
+            }
+            if (progressBar.transform.GetChild(0).GetComponent<Image>().fillAmount == 1 && i == 12)
+            {
+                NextButtomClick();
+                cookDone.gameObject.SetActive(true);
+                progressBar.gameObject.SetActive(false);
+
+            }
+
+        }
+        #endregion
+        private void AddFoodToSlot()
+        {
+            cookDone.gameObject.SetActive(false);
+            InventoryManager.AddItemToInventory(jchDish, 1);
+            PlayerMovement.isEnableInput = true;
+        }
         private void IsPlayerNextPot()
         {
             if (Cooker.isPlayerIn && i == 4)
@@ -172,6 +277,8 @@ namespace Tutorial
                 PlayerMovement.isEnableInput = false;
             }
         }
+
+       
 
         private void Init()
         {
@@ -185,6 +292,22 @@ namespace Tutorial
                 }
                 Time.timeScale = 0;
             }
+        }
+        private IEnumerator Timer(float time)
+        {
+            yield return new WaitForSeconds(time);
+            NextButtomClick();
+            
+            
+            
+            
+        }
+        private IEnumerator FrashIcon(float time)
+        {
+            cheeseAmountIcon.gameObject.SetActive(true);
+            yield return new WaitForSeconds(time);
+
+            cheeseAmountIcon.gameObject.SetActive(false);
         }
     }
 }

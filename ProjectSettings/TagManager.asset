@@ -6,6 +6,7 @@ TagManager:
   tags:
   - H_pot
   - J_pot
+  - dish
   layers:
   - Default
   - TransparentFX

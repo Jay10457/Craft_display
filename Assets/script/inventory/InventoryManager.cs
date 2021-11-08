@@ -20,6 +20,10 @@ namespace Inventory
 
         private void Awake()
         {
+           
+        }
+        private void OnEnable()
+        {
             if (instance == null)
             {
                 instance = this;
@@ -35,9 +39,9 @@ namespace Inventory
                     slots.Add(slot);
             }
             Debug.LogError(slots.Count);
-            
+
         }
-        
+
 
         private void Update()
         {

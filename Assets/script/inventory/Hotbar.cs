@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Inventory;
 
 namespace Inventory
@@ -10,9 +11,9 @@ namespace Inventory
 
     public class Hotbar : MonoBehaviour
     {
-        [SerializeField] private string equipParentName;
+        [SerializeField] private Transform equipParent;
 
-        Transform equipParent;
+
         InventorySlot[] slots;
         Transform currentEquip;
         Item lastItem;
@@ -34,12 +35,18 @@ namespace Inventory
                 if (i == currentSlotIndex && slots[i].currentItem != null)
                 {
                     slots[i].transform.localScale = Vector3.one * 1.1f;
-                    //Debug.LogError(i);//test slot index
+                    slots[currentSlotIndex].transform.GetChild(1).GetComponent<Image>().enabled = true;
+                    
+                }
+
+
+                else
+                {
+                    slots[i].transform.localScale = Vector3.one;
+                    slots[i].transform.GetChild(1).GetComponent<Image>().enabled = false;
                 }
                     
-                
-                else
-                    slots[i].transform.localScale = Vector3.one;
+
 
                 
             }
@@ -48,6 +55,7 @@ namespace Inventory
             {
                 case "1":
                     currentSlotIndex = 0;
+
                     break;
                 case "2":
                     currentSlotIndex = 1;
@@ -72,11 +80,13 @@ namespace Inventory
                     Destroy(currentEquip.gameObject);
                 }
                 //Instantiate equip item if currentItem type = Hand
-                if (slots[currentSlotIndex].currentItem && slots[currentSlotIndex].currentItem.type == Item.Type.Weapons)
+                if (slots[currentSlotIndex].currentItem != null/*&& slots[currentSlotIndex].currentItem.type == Item.Type.Weapons*/)
                 {
-                    //currentEquip = Instantiate(slots[currentSlotIndex].currentItem.equipPrefab, equipParent).transform;
-                    //currentEquip.localPosition = Vector3.zero;
+                    Debug.LogError("eqip");
+                    currentEquip = Instantiate(slots[currentSlotIndex].currentItem.equipPrefab, equipParent).transform;
+                    currentEquip.localPosition = Vector3.zero;
                 }
+
             }
         }
     }

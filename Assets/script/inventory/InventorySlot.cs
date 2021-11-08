@@ -77,7 +77,7 @@ namespace Inventory
                 itemImage.sprite = currentItem.itemSprite;
                 itemImage.color = Color.white;
                 stackImage.color = currentItem.itemBorderColor;
-                borderImage.color = currentItem.itemBorderColor;
+                
 
                 stackImage.gameObject.SetActive(currentItemAmount > 1);
                 stackText.text = currentItemAmount.ToString();
