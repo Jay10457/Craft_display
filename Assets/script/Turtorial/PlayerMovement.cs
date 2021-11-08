@@ -16,9 +16,11 @@ namespace Tutorial
         public Vector3 desiredMoveDirection;
         public float desiredRotationSpeed = 0.1f;
         public Animator anim;
+        
 
         public CharacterController controller;
         public bool isGrounded;
+        public static bool isEnableInput = true;
 
         [Header("Animation Smoothing")]
         [Range(0, 1f)]
@@ -46,7 +48,16 @@ namespace Tutorial
         }
         private void FixedUpdate()
         {
-            AnimePlayer();
+            if (isEnableInput)
+            {
+                AnimePlayer();
+            }
+            else
+            {
+                Speed = 0;
+                AnimePlayer();
+            }
+            
             Fall();
         }
         private void InputNagnitude()
