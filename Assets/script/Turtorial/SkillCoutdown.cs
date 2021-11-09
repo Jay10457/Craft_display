@@ -12,7 +12,7 @@ namespace Tutorial
         [SerializeField] private Image cdProgress;
         [SerializeField] private Text timeText;
 
-        private float time = 10;
+        private float time = 3;
 
         private void OnEnable()
         {
@@ -34,7 +34,7 @@ namespace Tutorial
             if (time > 0)
             {
                 time -= Time.deltaTime;
-                cdProgress.fillAmount = time / 10;
+                cdProgress.fillAmount = time / 3;
                 
                 if (cdProgress.fillAmount < 1)
                 {
@@ -46,7 +46,7 @@ namespace Tutorial
                     
                     PlayerMovement.isSkillOk = true;
                     timeText.gameObject.SetActive(false);
-                    time = 10;
+                    time = 3;
                 }
                 
             }

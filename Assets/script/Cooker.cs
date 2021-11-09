@@ -10,7 +10,9 @@ namespace Tutorial
     public class Cooker : MonoBehaviour
     {
         [SerializeField] private GameObject cookUI;
-        public static bool isPlayerIn;
+        
+        
+        public static bool isPlayerIn = false;
         private List<Collider> playerColliders = new List<Collider>();
 
 
@@ -23,7 +25,8 @@ namespace Tutorial
                 cookUI.gameObject.SetActive(true);
                 playerColliders.Add(col);
                 isPlayerIn = true;
-                //Debug.LogError(playerColliders.Count);
+                this.transform.GetComponent<SphereCollider>().enabled = false;
+                
 
             }
         }

@@ -175,13 +175,13 @@ namespace Tutorial
                     nextButtom.gameObject.SetActive(false);
                     
                     TutorialCooker();
-                    StartCoroutine(Timer(1f, true));// into pot tutorial
+                    StartCoroutine(Timer(3f, true));// into pot tutorial
                     break;
                 case 8:
                     tutorialUI.GetComponent<Image>().raycastTarget = false;
                     break;
                 case 9:
-                    StartCoroutine(Timer(1f, true));                   
+                    StartCoroutine(Timer(3f, true));                   
                     break;
                 case 13:
                     CamMove();
@@ -275,7 +275,7 @@ namespace Tutorial
         {
             materialSlots[index].gameObject.GetComponent<Image>().sprite = cheeseIcon;
             materialAmount -= 1;
-            StartCoroutine(FrashIcon(1.5f));
+            StartCoroutine(FrashIcon(3f));
             StartCoroutine(Timer(0f, true));
             switch (index)
             {
@@ -351,6 +351,7 @@ namespace Tutorial
                 NextButtomClick();
                 nextButtom.transform.localPosition = new Vector3(800, -90, 0);
                 nextButtom.gameObject.SetActive(true);
+                Cooker.isPlayerIn = false;
                 PlayerMovement.isEnableInput = false;
             }
         }
@@ -372,7 +373,7 @@ namespace Tutorial
         {
             Instantiate(blackCheese, spawnPivot.localPosition, Quaternion.Euler(0, -120, 0));
         }
-       private void ItemTutor()
+       private void ItemTutor()// into item tutor panel
         {
             if (Input.GetMouseButton(0) && i == 28)
             {
