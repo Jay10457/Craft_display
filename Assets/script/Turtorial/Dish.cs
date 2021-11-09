@@ -17,8 +17,12 @@ namespace Tutorial
             {
                 InventoryManager.RemoveItemFromInventory(item, 1);
                 isDishDestroy = true;
+                Debug.LogError("destroy");
             }
+
+
+            
         }
+        
     }
 }
-

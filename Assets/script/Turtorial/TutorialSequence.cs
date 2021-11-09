@@ -34,6 +34,7 @@ namespace Tutorial
         [SerializeField] private Slider bar;
         [SerializeField] private Button yesButtom;
         [SerializeField] private Button noButtom;
+        [SerializeField] private GameObject loading;
         
         //Op Vector 3 for next Buttom
         
@@ -82,6 +83,7 @@ namespace Tutorial
             {
                 if (OnBackToLobbyButtomClick != null) OnBackToLobbyButtomClick();
             });
+            isDishPutAble = false;
 
         }
         private void Awake()
@@ -388,6 +390,7 @@ namespace Tutorial
                 NextButtomClick();
                 redText.text = "50";
                 bar.value = 70;
+                Dish.isDishDestroy = false;
             }
         }
         private void Init()
@@ -433,7 +436,9 @@ namespace Tutorial
         }
         private void BackToLobby()
         {
-            SceneManager.LoadScene("Menu");
+            loading.SetActive(true);
+            
+            
         }
         private IEnumerator FrashIcon(float time)
         {
@@ -442,5 +447,7 @@ namespace Tutorial
 
             cheeseAmountIcon.gameObject.SetActive(false);
         }
+
+       
     }
 }

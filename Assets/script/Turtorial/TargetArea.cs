@@ -10,6 +10,10 @@ namespace Tutorial
     {
         public static bool isInTargetArea = false;
 
+        private void OnEnable()
+        {
+            isInTargetArea = false;
+        }
         private void OnTriggerEnter(Collider col)
         {
             if (col.gameObject.tag == "Player")

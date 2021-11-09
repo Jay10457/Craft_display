@@ -13,9 +13,20 @@ public class LoadingScene : MonoBehaviour
    
     private void OnEnable()
     {
-        async = SceneManager.LoadSceneAsync("TutorialLevel");
-        async.allowSceneActivation = false;
-        StartCoroutine(Loading());
+        if (SceneManager.GetActiveScene().name == "Menu")
+        {
+            async = SceneManager.LoadSceneAsync("TutorialLevel", LoadSceneMode.Single);
+            async.allowSceneActivation = false;
+            StartCoroutine(Loading());
+        }
+        else if (SceneManager.GetActiveScene().name == "TutorialLevel")
+        {
+            async = SceneManager.LoadSceneAsync("Menu", LoadSceneMode.Single);
+            SceneManager.UnloadSceneAsync("TutorialLevel");
+            async.allowSceneActivation = false;
+            StartCoroutine(Loading());
+        }
+        
     }
     private IEnumerator Loading()
     {
