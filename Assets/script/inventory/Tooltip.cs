@@ -11,7 +11,7 @@ namespace Inventory
     public class Tooltip : MonoBehaviour
     {
         [SerializeField] private Transform tooltipHolder;
-        [SerializeField] private TMP_Text tooltipText;
+        [SerializeField] private Text tooltipText;
 
 
         public void SetTooltip(string text, Vector3 position)

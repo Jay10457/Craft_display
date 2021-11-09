@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 using Inventory;
 namespace Tutorial
 {
@@ -27,13 +28,21 @@ namespace Tutorial
         [SerializeField] private Image progressBar;
         [SerializeField] private Button cookDone;
         [SerializeField] private Item jchDish;
-        [SerializeField] private Camera cam;
+        [SerializeField] private GameObject blackCheese;
+        [SerializeField] private Transform spawnPivot;
+        [SerializeField] private Text redText;
+        [SerializeField] private Slider bar;
+        [SerializeField] private Button yesButtom;
+        [SerializeField] private Button noButtom;
+        
+        //Op Vector 3 for next Buttom
         
         
 
         private event Action OnNextButtomClick;
         private event Action OnCookStartButtomClick;
         private event Action OnCookDoneButtomClick;
+        private event Action OnBackToLobbyButtomClick;
         private GameObject currentChapter;
         
         private Image bg;
@@ -41,13 +50,17 @@ namespace Tutorial
         private int materialAmount = 5;       
         private int i = 0;
         private float time = 0;
+        private float CD = 0;
         private bool canCook = false;
         public static bool lookAtTarget = false;
+        public static bool isDishPutAble = false;
+        
         
         
 
         private void OnEnable()
         {
+            
             nextButtom.onClick.RemoveAllListeners();
             nextButtom.onClick.AddListener(() =>
             {
@@ -64,6 +77,12 @@ namespace Tutorial
                 if (OnCookDoneButtomClick != null) OnCookDoneButtomClick();
             });
 
+            noButtom.onClick.RemoveAllListeners();
+           noButtom.onClick.AddListener(() =>
+            {
+                if (OnBackToLobbyButtomClick != null) OnBackToLobbyButtomClick();
+            });
+
         }
         private void Awake()
         {
@@ -72,6 +91,7 @@ namespace Tutorial
         private void Start()
         {
             OnNextButtomClick += NextButtomClick;
+            
             
             
             
@@ -87,9 +107,15 @@ namespace Tutorial
             {
                 CookerTimer(3f);
             }
-            
+            StunCheck();
+            InTargetArea();
+            CheckDishDestroy();
+            ItemTutor();
 
-           
+
+
+
+
 
 
         }
@@ -108,7 +134,7 @@ namespace Tutorial
         }
         private void UnLock()
         {
-            if (i == 3 && Input.anyKeyDown)
+            if (i == 3 && Input.GetMouseButtonDown(0))
             {
                 NextButtomClick();
                 
@@ -123,7 +149,7 @@ namespace Tutorial
         private void NextButtomClick()
         {
 
-            //Debug.LogError(i);
+            Debug.LogError(i);
             switch (i)
             {
                 case 1:
@@ -147,19 +173,66 @@ namespace Tutorial
                     nextButtom.gameObject.SetActive(false);
                     
                     TutorialCooker();
-                    StartCoroutine(Timer(1f));// into pot tutorial
+                    StartCoroutine(Timer(1f, true));// into pot tutorial
                     break;
                 case 8:
                     tutorialUI.GetComponent<Image>().raycastTarget = false;
                     break;
                 case 9:
-                    StartCoroutine(Timer(1f));
+                    StartCoroutine(Timer(1f, true));                   
+                    break;
+                case 13:
+                    CamMove();
+                    break;
+                case 14:
+                    CamMoveBack();
+                    break;
+                case 15:
+                    nextButtom.transform.localPosition = new Vector3(650, -280, 0);
+                    break;
+                case 17:
+                    nextButtom.transform.localPosition = new Vector3(20, -350, 0);
+                        break;
+                case 18:
+                    nextButtom.transform.localPosition = new Vector3(800, -90, 0);
+                    SpawnBlackCheese();
+                    break;
+                case 19:
+                    nextButtom.transform.localPosition = new Vector3(20, -350, 0);
+                    break;
+                case 21:
+                    nextButtom.gameObject.SetActive(false);
+                    PlayerMovement.isEnableInput = true;
+                    break;
+                case 22:
+                    StartCoroutine(Timer(2f, true));
+                    break;
+                case 24:
+                    nextButtom.gameObject.SetActive(true);
+                    nextButtom.transform.localPosition = new Vector3(800, -120, 0);
+                    break;
+                case 25:
+                    nextButtom.gameObject.SetActive(false);
+                    isDishPutAble = true;
+                    break;
+                case 26:
+                    StartCoroutine(Timer(1f, true));
                     
                     break;
+                case 28:
+                    nextButtom.gameObject.SetActive(true);
+                    nextButtom.transform.localPosition = new Vector3(600, -450, 0);
+                    break;
+                case 29:
+                    nextButtom.gameObject.SetActive(false);
+                    OnBackToLobbyButtomClick += BackToLobby;
+                    break;
+                
                 default:
                     break;
             }
             i += 1;
+
             sequence[i].SetActive(true);
             sequence[i - 1].SetActive(false);
             
@@ -200,8 +273,8 @@ namespace Tutorial
         {
             materialSlots[index].gameObject.GetComponent<Image>().sprite = cheeseIcon;
             materialAmount -= 1;
-            StartCoroutine(FrashIcon(2f));
-            StartCoroutine(Timer(0f));
+            StartCoroutine(FrashIcon(1.5f));
+            StartCoroutine(Timer(0f, true));
             switch (index)
             {
                 case 0:
@@ -215,6 +288,7 @@ namespace Tutorial
                 default:
                     break;
             }
+            
         }
         private void CookButtonController()
         {
@@ -265,7 +339,8 @@ namespace Tutorial
         {
             cookDone.gameObject.SetActive(false);
             InventoryManager.AddItemToInventory(jchDish, 1);
-            PlayerMovement.isEnableInput = true;
+            
+            StartCoroutine(Timer(2f, true));
         }
         private void IsPlayerNextPot()
         {
@@ -278,8 +353,43 @@ namespace Tutorial
             }
         }
 
-       
+        private void CamMove()
+        {
+            lookAtTarget = true;
+            StartCoroutine(Timer(3f, true));
 
+        }
+        private void CamMoveBack()
+        {
+            lookAtTarget = false;
+            nextButtom.gameObject.SetActive(true);
+            nextButtom.transform.localPosition = new Vector3(800, -90, 0);
+        }
+
+        private void SpawnBlackCheese()
+        {
+            Instantiate(blackCheese, spawnPivot.localPosition, Quaternion.Euler(0, -120, 0));
+        }
+       private void ItemTutor()
+        {
+            if (Input.GetMouseButton(0) && i == 28)
+            {
+                NextButtomClick();
+                
+            }
+            
+        }
+
+       
+        private void CheckDishDestroy()
+        {
+            if (Dish.isDishDestroy && i == 26)
+            {
+                NextButtomClick();
+                redText.text = "50";
+                bar.value = 70;
+            }
+        }
         private void Init()
         {
             Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
@@ -293,14 +403,37 @@ namespace Tutorial
                 Time.timeScale = 0;
             }
         }
-        private IEnumerator Timer(float time)
+        private void StunCheck()
+        {
+            if (BlackCheese.isStun)
+            {
+                NextButtomClick();
+                BlackCheese.isStun = false;
+            }
+        }
+        private void InTargetArea()
+        {
+            if (TargetArea.isInTargetArea && i == 24)
+            {
+                NextButtomClick();
+                
+            }
+        }
+        private IEnumerator Timer(float time, bool conditon)
         {
             yield return new WaitForSeconds(time);
+            conditon = true;
             NextButtomClick();
+           
             
             
             
             
+            
+        }
+        private void BackToLobby()
+        {
+            SceneManager.LoadScene("Menu");
         }
         private IEnumerator FrashIcon(float time)
         {

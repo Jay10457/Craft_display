@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7510850984950232088}
   - component: {fileID: 5755336874189717714}
   - component: {fileID: 1848576851205243428}
+  - component: {fileID: 7856658411841535151}
   m_Layer: 0
   m_Name: Jdish_0204 hand
   m_TagString: dish
@@ -93,5 +94,18 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.17
+  m_Radius: 0.69
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7856658411841535151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6115866393568518407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56ae5fc8da2b42b42855f972664b34c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 9e2223963f4644b42bfae81cc354a4df, type: 2}

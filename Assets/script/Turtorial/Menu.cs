@@ -11,6 +11,7 @@ namespace Tutorial
     {
         [SerializeField] private Button tutorialButtom;
         [SerializeField] private Button storyButtom;
+        [SerializeField] private GameObject loadingPanel;
 
         private event Action OnTutorialButtomClick;
 
@@ -28,7 +29,7 @@ namespace Tutorial
         }
         private void ToLoading()
         {
-            SceneManager.LoadScene("LoadingScene");
+            loadingPanel.SetActive(true);
         }
     }
 }

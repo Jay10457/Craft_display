@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Tutorial;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -21,8 +22,8 @@ public class CameraFollow : MonoBehaviour
 
     public float FollowSpeed = 5f;
 
-    [SerializeField]
-    Transform target;
+    [SerializeField] Transform target;
+    [SerializeField] Transform target2;
 
     Transform cameraTransform;
     Vector3 followOffset;
@@ -49,7 +50,16 @@ public class CameraFollow : MonoBehaviour
     
     void moveCamera()
     {
-        cameraTransform.position = Vector3.Lerp(cameraTransform.position, target.position - followOffset, Time.fixedDeltaTime * FollowSpeed);
+        if (TutorialSequence.lookAtTarget)
+        {
+            
+            cameraTransform.position = Vector3.Lerp(cameraTransform.localPosition, target2.localPosition - followOffset, Time.fixedDeltaTime * 3);
+        }
+        else
+        {
+            cameraTransform.position = Vector3.Lerp(cameraTransform.position, target.position - followOffset, Time.fixedDeltaTime * FollowSpeed);
+        }
+       
     }
 
     public void SetNewTarget(Transform newTarget, bool calcOffset = false)

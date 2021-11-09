@@ -10,15 +10,12 @@ public class LoadingScene : MonoBehaviour
     private AsyncOperation async;
     private float progress;
 
-    private void Start()
+   
+    private void OnEnable()
     {
-        if (SceneManager.GetActiveScene().name == "LoadingScene")
-        {
-            async = SceneManager.LoadSceneAsync("TutorialLevel");
-            async.allowSceneActivation = false;
-            StartCoroutine(Loading());
-        }
-        
+        async = SceneManager.LoadSceneAsync("TutorialLevel");
+        async.allowSceneActivation = false;
+        StartCoroutine(Loading());
     }
     private IEnumerator Loading()
     {

@@ -15,7 +15,11 @@ namespace Tutorial
         public float allowPlayerRotation = 0.1f;
         public Vector3 desiredMoveDirection;
         public float desiredRotationSpeed = 0.1f;
+        public float sprintSpeed;
+        public float sprintTime;
         public Animator anim;
+        public static bool isSkillOk = true;
+        public static bool isSpriting = false;
         
 
         public CharacterController controller;
@@ -44,9 +48,10 @@ namespace Tutorial
         }
         private void Update()
         {
-            if (isEnableInput)
+            if (isEnableInput && !TutorialSequence.lookAtTarget)
             {
                 InputNagnitude();
+                Sprint();
             }
             
         }
@@ -91,6 +96,34 @@ namespace Tutorial
 
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
             controller.Move(desiredMoveDirection * Time.deltaTime * Velocity);
+        }
+
+        private void Sprint()
+        {
+            if (Input.GetKeyDown(KeyCode.E) && isSkillOk)
+            {
+                
+                
+                StartCoroutine(sprint());
+                anim.SetTrigger("Sprint");
+                
+            }
+        }
+        private IEnumerator sprint()
+        {
+            float startTime = Time.time;
+            while(Time.time < startTime + sprintTime)
+            {
+
+                isSpriting = true;
+                controller.Move(desiredMoveDirection * sprintSpeed * Time.deltaTime);
+                
+                yield return null;
+                isSkillOk = false;
+                isSpriting = false;
+                Debug.LogError(isSpriting);
+
+            }
         }
         private void Fall()
         {
