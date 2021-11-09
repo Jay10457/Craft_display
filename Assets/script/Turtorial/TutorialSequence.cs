@@ -273,25 +273,30 @@ namespace Tutorial
         }
         private void AddMaterial(int index)
         {
-            materialSlots[index].gameObject.GetComponent<Image>().sprite = cheeseIcon;
-            materialAmount -= 1;
-            StartCoroutine(FrashIcon(3f));
-            StartCoroutine(Timer(0f, true));
-            switch (index)
+            if (i == 9)
             {
-                case 0:
-                    materialSlots[1].gameObject.GetComponent<Button>().enabled = false;
-                    materialSlots[0].gameObject.GetComponent<Button>().enabled = false;
-                    break;
-                case 1:
-                    materialSlots[0].gameObject.GetComponent<Button>().enabled = false;
-                    materialSlots[1].gameObject.GetComponent<Button>().enabled = false;
-                    break;
-                default:
-                    break;
+                materialSlots[index].gameObject.GetComponent<Image>().sprite = cheeseIcon;
+                materialAmount -= 1;
+                StartCoroutine(FrashIcon(3f));
+                StartCoroutine(Timer(0f, true));
+                switch (index)
+                {
+                    case 0:
+                        materialSlots[1].gameObject.GetComponent<Button>().enabled = false;
+                        materialSlots[0].gameObject.GetComponent<Button>().enabled = false;
+                        break;
+                    case 1:
+                        materialSlots[0].gameObject.GetComponent<Button>().enabled = false;
+                        materialSlots[1].gameObject.GetComponent<Button>().enabled = false;
+                        break;
+                    default:
+                        break;
+                }
             }
             
+            
         }
+        
         private void CookButtonController()
         {
             

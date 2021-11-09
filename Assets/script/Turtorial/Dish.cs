@@ -10,19 +10,27 @@ namespace Tutorial
     public class Dish : MonoBehaviour
     {
         [SerializeField] private Item item;
-        public static bool isDishDestroy = false;
-        private void OnTriggerStay(Collider col)
+        public static bool isDishDestroy;
+        public static bool isDishInArea;
+
+        private void OnEnable()
         {
-            if (TutorialSequence.isDishPutAble)
+            isDishInArea = false;
+            isDishDestroy = false;
+        }
+        private void Update()
+        {
+            DestroyDish();
+        }
+
+        private void DestroyDish()
+        {
+            if (TutorialSequence.isDishPutAble && TargetArea.isInTargetArea)
             {
                 InventoryManager.RemoveItemFromInventory(item, 1);
                 isDishDestroy = true;
-                Debug.LogError("destroy");
+                //Debug.LogError("destroy");
             }
-
-
-            
         }
-        
     }
 }

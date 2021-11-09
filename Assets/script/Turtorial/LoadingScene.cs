@@ -22,7 +22,6 @@ public class LoadingScene : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "TutorialLevel")
         {
             async = SceneManager.LoadSceneAsync("Menu", LoadSceneMode.Single);
-            SceneManager.UnloadSceneAsync("TutorialLevel");
             async.allowSceneActivation = false;
             StartCoroutine(Loading());
         }

@@ -14,12 +14,22 @@ namespace Tutorial
         {
             isInTargetArea = false;
         }
-        private void OnTriggerEnter(Collider col)
+        private void OnTriggerStay(Collider col)
         {
             if (col.gameObject.tag == "Player")
             {
                 isInTargetArea = true;
+                //Debug.LogError("PlayerIN");
             }
+            
+        }
+        private void OnTriggerExit(Collider col)
+        {
+            if (col.gameObject.tag == "Player")
+            {
+                isInTargetArea = false;
+            }
+            
         }
     }
 }
