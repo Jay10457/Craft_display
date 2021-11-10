@@ -23,6 +23,7 @@ namespace Tutorial
             {
                 anim.SetTrigger("Hit");
                 isStun = true;
+                this.GetComponent<Collider>().enabled = false;
                 
 
             }
